@@ -1,4 +1,5 @@
 const Bootcamp = require('../models/Bootcamp');
+const errorResponse = require('../utils/errorResponse');
 
 // @desc    Get all bootcamps
 // @route   GET /api/v1/bootcamps
@@ -19,7 +20,7 @@ exports.getBootCamp = async (req, res, next) => {
   try {
     const bootcamp = await Bootcamp.findById(req.params.id);
     if (!bootcamp) {
-      res.status(404).json({ success: false });
+      next(new errorResponse(`Bootcamp not found with id of ${req.params.id}`, 404, 'CastError'));
       return;
     }
     res.status(200).json({ success: true, data: bootcamp });
@@ -50,7 +51,7 @@ exports.updateBootcamp = async (req, res, next) => {
       runValidators: true
     });
     if (!bootcamp) {
-      res.status(404).json({ success: false });
+      next(new errorResponse(`Bootcamp not found with id of ${req.params.id}`, 404, 'CastError'));
       return;
     }
     res.status(200).json({ success: true, data: bootcamp });
@@ -64,7 +65,11 @@ exports.updateBootcamp = async (req, res, next) => {
 // @access  Private
 exports.deleteBootcamp = async (req, res, next) => {
   try {
-    await Bootcamp.findByIdAndDelete(req.params.id);
+    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+    if (!bootcamp) {
+      next(new errorResponse(`Bootcamp not found with id of ${req.params.id}`, 404, 'CastError'));
+      return;
+    }
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
     next(error);
