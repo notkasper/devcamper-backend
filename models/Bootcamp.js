@@ -104,7 +104,6 @@ const BootcampSchema = new mongoose.Schema(
 // not using arrow function because they handle the 'this' keyword differently
 BootcampSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
-  console.log(`Slugify ran: ${this.slug}`);
   next();
 });
 
