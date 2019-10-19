@@ -10,16 +10,22 @@ exports.getBootCamps = asyncHandler(async (req, res, next) => {
   const reqQuery = { ...req.query };
 
   // fields to exclude
-  const removeFields = ['select'];
+  const removeFields = ['select', 'sort'];
   // loop over removeFields and delete them from the query
   removeFields.forEach(param => delete reqQuery[param]);
 
   let queryString = JSON.stringify(reqQuery);
   queryString = queryString.replace(/\b(gt|gte|lt|lte|in)\b()/g, match => `$${match}`);
   let query = Bootcamp.find(JSON.parse(queryString));
-  if (req.query) {
+  if (req.query.select) {
     const fields = req.query.select.replace(',', ' ');
     query = query.select(fields);
+  }
+  if (req.query.sort) {
+    const sortBy = req.query.sort.replace(',', '');
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
   }
   const bootcamps = await query;
   res.status(200).json({ success: true, count: bootcamps.length, data: bootcamps });
