@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const BootcampSchema = new mongoose.Schema(
   {
@@ -98,5 +99,13 @@ const BootcampSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+
+// Create bootcamp slug from the name
+// not using arrow function because they handle the 'this' keyword differently
+BootcampSchema.pre('save', function(next) {
+  this.slug = slugify(this.name, { lower: true });
+  console.log(`Slugify ran: ${this.slug}`);
+  next();
+});
 
 module.exports = mongoose.model('Bootcamp', BootcampSchema);
