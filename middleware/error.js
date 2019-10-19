@@ -1,16 +1,20 @@
 const ErrorResponse = require('../utils/errorResponse');
 
-module.exports = (error, req, res, next) => {
-  console.error(error.stack.red);
+module.exports = (err, req, res, next) => {
+  let error = { ...err };
+  console.error(error);
 
   let message;
   let status;
   if (error.name === 'CastError') {
     message = `Resource not found with id ${error.value}`;
-    status = 404;
+    error = new ErrorResponse(message, 404);
   }
 
-  const errorResponse = new ErrorResponse(message ? message : error.message, status ? status : 500);
+  if (error.code === 11000) {
+    message = `Resource with id ${error.value} already exists`;
+    error = new ErrorResponse(message, 400);
+  }
 
-  res.status(errorResponse.statusCode || 500).json({ success: false, error: errorResponse.message || 'Server errror' });
+  res.status(error.statusCode || 500).json({ success: false, error: error.message });
 };
