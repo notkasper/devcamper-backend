@@ -65,3 +65,37 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
     data: course
   });
 });
+
+// @desc    update a course
+// @route   PUT /api/v1/bootcamps/:id
+// @access  Private
+exports.updateCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: course
+  });
+});
+
+// @desc    delete a course
+// @route   DELETE /api/v1/bootcamps/:id
+// @access  Private
+exports.deleteCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findById(req.params.id, req.body);
+
+  if (!course) {
+    next(new ErrorResponse(`No course with id ${req.params.bootcampId}`, 404));
+    return;
+  }
+
+  await course.remove();
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  });
+});
