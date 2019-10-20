@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const colors = require('colors');
 const fileupload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
 dotenv.config({ path: './config/config.env' });
 
 const connectDb = require('./config/db');
@@ -15,14 +16,19 @@ const auth = require('./routes/auth');
 connectDb();
 
 const app = express();
+
+// Body parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
+
+// File uploading
+app.use(fileupload());
 
 if (process.env.NODE_ENV == 'development') {
   app.use(morgan('dev'));
 }
-
-// File uploading
-app.use(fileupload());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, './public')));
