@@ -11,7 +11,7 @@ module.exports = (err, req, res, next) => {
   }
 
   if (error.code === 11000) {
-    message = `Resource with id ${error.value} already exists`;
+    message = `One or more data fields are not unique: ${error.errmsg}`;
     error = new ErrorResponse(message, 400);
   }
 
