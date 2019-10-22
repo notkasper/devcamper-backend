@@ -49,7 +49,7 @@ app.use(xssClean());
 // Rate limiting
 app.use(
   expressRateLimit({
-    windowMs: 1000 * 60 * 10, // 100 mins
+    windowMs: 1000 * 60 * 5, // 100 mins
     max: 100
   })
 );
