@@ -10,13 +10,6 @@ sendEmail = async options => {
     }
   });
 
-  console.log(`${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`);
-  console.log(`${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`);
-  console.log(`${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`);
-  console.log(`${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`);
-  console.log(`${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`);
-  console.log(`${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`);
-
   const message = {
     from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,
     to: options.email,
