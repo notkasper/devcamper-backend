@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xssClean = require('xss-clean');
+const expressRateLimit = require('express-rate-limit');
+const hpp = require('hpp');
 dotenv.config({ path: './config/config.env' });
 
 const connectDb = require('./config/db');
@@ -21,6 +23,10 @@ const reviews = require('./routes/reviews');
 connectDb();
 
 const app = express();
+
+if (process.env.NODE_ENV == 'development') {
+  app.use(morgan('dev'));
+}
 
 // Body parser
 app.use(express.json());
@@ -40,9 +46,16 @@ app.use(helmet());
 // Xss prevention
 app.use(xssClean());
 
-if (process.env.NODE_ENV == 'development') {
-  app.use(morgan('dev'));
-}
+// Rate limiting
+app.use(
+  expressRateLimit({
+    windowMs: 1000 * 60 * 10, // 100 mins
+    max: 100
+  })
+);
+
+// Prevent http param pollution
+app.use(hpp());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, './public')));
