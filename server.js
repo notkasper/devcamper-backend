@@ -10,6 +10,7 @@ const helmet = require('helmet');
 const xssClean = require('xss-clean');
 const expressRateLimit = require('express-rate-limit');
 const hpp = require('hpp');
+const cors = require('cors');
 dotenv.config({ path: './config/config.env' });
 
 const connectDb = require('./config/db');
@@ -56,6 +57,9 @@ app.use(
 
 // Prevent http param pollution
 app.use(hpp());
+
+// CORS
+app.use(cors());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, './public')));
