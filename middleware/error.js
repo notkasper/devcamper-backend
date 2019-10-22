@@ -6,7 +6,7 @@ module.exports = (err, req, res, next) => {
 
   let message;
   if (error.name === 'CastError') {
-    message = `Resource not found with id ${error.value}`;
+    message = 'Resource not found';
     error = new ErrorResponse(message, 404);
   }
 
