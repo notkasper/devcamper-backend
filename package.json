@@ -4,7 +4,8 @@
   "description": "DevCamper backend api",
   "main": "server.js",
   "scripts": {
-    "start": "set NODE_ENV=production&& node server",
+    "start": "NODE_ENV=production node server",
+    "start-windows": "set NODE_ENV=production&& node server",
     "dev": "nodemon server"
   },
   "author": "Kasper Karelse",
