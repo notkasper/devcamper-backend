@@ -19,7 +19,7 @@ sendEmail = async options => {
 
   const info = await transporter.sendMail(message);
 
-  console.log(`Message sent: %s: ${info.messageId}`);
+  console.log(`Email sent: ${info.messageId}`);
 };
 
 module.exports = sendEmail;
